@@ -1,0 +1,4 @@
+company_id,report_year,revenue,profit,assets,liabilities,equity,cash,employees
+demo_haldus,2022,320000,14500,120000,72000,48000,18000,6
+demo_haldus,2023,370000,19000,150000,89000,61000,26000,7
+demo_haldus,2024,420000,23500,195000,115000,80000,48500,8
