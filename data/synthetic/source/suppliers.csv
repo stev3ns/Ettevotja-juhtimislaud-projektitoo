@@ -1,0 +1,5 @@
+supplier_id,supplier_name,category,payment_terms_days,critical_supplier
+S001,Remondipartner OÜ,repair,14,True
+S002,Puhastuspartner OÜ,cleaning,14,True
+S003,Tarkvara OÜ,software,30,False
+S004,Kontorikulud OÜ,office,30,False
