@@ -33,6 +33,25 @@ flowchart LR
     scheduler[Scheduler] --> ingest
 ```
 
+Andmeallikad
+├── Merit Aktiva API  →  HTTP REST päring
+│     → stg_merit_pangakontod  ─┐
+│     → stg_merit_kassa         ├─→ mart_vaba_raha → Vaba raha
+│     → stg_merit_myygiarved   ─┼─→ mart_tulud_kulud_30p → Tulud & Kulud 30p
+│     → stg_merit_ostuarved    ─┘     ↓
+│     → stg_merit_tehingud  ──────→ mart_viimased_tehingud → Viimased tehingud
+│                                   mart_vaba_raha + mart_tulud_kulud_30p
+│                                     ↓
+│                                   mart_runway → Runway
+│                                   mart_kaibemaks → KM arvestus
+│
+├── EMTA Maksulaekumine  →  HTTP allalaadimine
+│     → stg_emta_maksulaekumine  ─┐
+│                                  ├─→ mart_konkurendid → Konkurentide võrdlus
+└── EMTA Maksuvõlglaste nimekiri  → stg_emta_maksuvolglased ─┘
+
+Kõik mart tabelid → Andmekvaliteedi testid
+
 
 ## Andmebaasi kihid
 
