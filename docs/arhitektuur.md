@@ -17,15 +17,15 @@ Ettevõtja juhtimislaud, mis võimaldab jälgida ettevõtte finantsseisu reaalaj
 
 | Allikas | Tüüp | Ajas muutuv? | Roll |
 |---------|------|--------------|------|
-| [Merit Aktiva API] | [API] | Jah | Töölaua andmete kuvamiseks |
-| [EMTA avaandmed] | [CSV] | Jah, uueneb iga kvartalile järgneva kuu 10. kuupäeval | [Konkurentide info kuvamiseks]|
+| Merit Aktiva API | API | Jah | Töölaua andmete kuvamiseks |
+| EMTA avaandmed | CSV | Jah, uueneb iga kvartalile järgneva kuu 10. kuupäeval | Konkurentide info kuvamiseks|
 
 ## Andmevoog
 
 ```mermaid
 flowchart LR
     source[Merit Aktiva API] --> ingest[Sissevõtt]
-    source[EMTA avaandmed] --> ingest[Sissevõtt]
+    source[EMTA avaandmed] --> ingest
     ingest --> staging[(staging)]
     staging --> transform[Transformatsioon]
     transform --> mart[(mart)]
