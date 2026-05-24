@@ -17,97 +17,22 @@ Ettevõtja juhtimislaud, mis võimaldab jälgida ettevõtte finantsseisu reaalaj
 
 | Allikas | Tüüp | Ajas muutuv? | Roll |
 |---------|------|--------------|------|
-| [Nimi] | [API / CSV / DB] | Jah, [iga X tundi / päeva] | [Milleks kasutatakse?] |
-| [Nimi] | [seed / dim-tabel] | Ei, staatiline | [Milleks kasutatakse?] |
+| [Merit Aktiva API] | [API] | Jah | Töölaua andmete kuvamiseks |
+| [EMTA avaandmed] | [CSV] | Jah, uueneb iga kvartalile järgneva kuu 10. kuupäeval | [Konkurentide info kuvamiseks]|
 
 ## Andmevoog
 
 ```mermaid
 flowchart LR
     source[Merit Aktiva API] --> ingest[Sissevõtt]
+    source[EMTA avaandmed] --> ingest[Sissevõtt]
     ingest --> staging[(staging)]
     staging --> transform[Transformatsioon]
     transform --> mart[(mart)]
-    mart --> dashboard[Näidikulaud]
+    mart --> dashboard[Juhtimislaud]
     mart --> quality[Andmekvaliteedi testid]
     scheduler[Scheduler] --> ingest
 ```
-flowchart TD
-    subgraph SRC["Andmeallikad"]
-        MA["Merit Aktiva API"]
-        EMTA_MK["EMTA Maksulaekumine\navaandmed"]
-        EMTA_MV["EMTA Maksuvõlglaste\nnimekiri CSV"]
-    end
-
-    subgraph INGEST["Sissevõtt"]
-        IN_MA["HTTP REST päring"]
-        IN_MK["HTTP allalaadimine"]
-        IN_MV["CSV allalaadimine"]
-    end
-
-    subgraph STAGING["PostgreSQL · staging — töötlemata andmed"]
-        S1["stg_merit_pangakontod"]
-        S2["stg_merit_kassa"]
-        S3["stg_merit_myygiarved"]
-        S4["stg_merit_ostuarved"]
-        S5["stg_merit_tehingud"]
-        S6["stg_emta_maksulaekumine"]
-        S7["stg_emta_maksuvolglased"]
-    end
-
-    subgraph MART["PostgreSQL · mart — äriloogika ja mõõdikud"]
-        M1["mart_vaba_raha\nsaldo + kassa − tasumata arved"]
-        M2["mart_tulud_kulud_30p\nviimase 30p tulu ja kulu"]
-        M3["mart_runway\nvaba raha ÷ kulu/päev"]
-        M4["mart_kaibemaks\nmüügikm − sisendkm"]
-        M5["mart_viimased_tehingud\n5 viimast tehingut"]
-        M6["mart_konkurendid\nkäive · kasum · töötajad · võlg"]
-    end
-
-    QA["Andmekvaliteedi testid"]
-
-    subgraph DASH["Ettevõtja juhtimislaud"]
-        D1["Vaba raha"]
-        D2["Tulud ja kulud 30p"]
-        D3["Runway"]
-        D4["KM arvestus"]
-        D5["Viimased tehingud"]
-        D6["Konkurentide vordlus"]
-    end
-
-    MA --> IN_MA
-    EMTA_MK --> IN_MK
-    EMTA_MV --> IN_MV
-
-    IN_MA --> S1
-    IN_MA --> S2
-    IN_MA --> S3
-    IN_MA --> S4
-    IN_MA --> S5
-    IN_MK --> S6
-    IN_MV --> S7
-
-    S1 --> M1
-    S2 --> M1
-    S4 --> M1
-    S3 --> M2
-    S4 --> M2
-    M1 --> M3
-    M2 --> M3
-    S3 --> M4
-    S4 --> M4
-    S5 --> M5
-    S6 --> M6
-    S7 --> M6
-
-    MART --> QA
-
-    M1 --> D1
-    M2 --> D2
-    M3 --> D3
-    M4 --> D4
-    M5 --> D5
-    M6 --> D6
 
 ## Andmebaasi kihid
 
