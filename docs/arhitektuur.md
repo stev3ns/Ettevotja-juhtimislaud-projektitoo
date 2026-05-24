@@ -24,8 +24,8 @@ Ettevõtja juhtimislaud, mis võimaldab jälgida ettevõtte finantsseisu reaalaj
 
 ```mermaid
 flowchart LR
-    source[Merit Aktiva API] --> ingest[Sissevõtt]
-    source[EMTA avaandmed] --> ingest
+    source1[Merit Aktiva API] --> ingest[Sissevõtt]
+    source2[EMTA avaandmed] --> ingest
     ingest --> staging[(staging)]
     staging --> transform[Transformatsioon]
     transform --> mart[(mart)]
