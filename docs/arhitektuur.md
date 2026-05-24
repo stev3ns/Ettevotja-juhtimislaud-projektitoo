@@ -54,10 +54,11 @@ flowchart LR
 
 | Risk | Mõju | Maandus |
 |------|------|---------|
-| [Risk 1 — näiteks: API ei vasta] | [Mis juhtub?] | [Kuidas maandad?] |
-| [Risk 2] | [Mis juhtub?] | [Kuidas maandad?] |
-| [Risk 3] | [Mis juhtub?] | [Kuidas maandad?] |
+| Merit Aktiva API muutub või ei vasta | API-t ja/või endpointe uuendatakse, breaking change  | Versioneeritud API kasutamine, Meriti changelogi jälgimine, vana cache näitamine, kui API ei vasta |
+| EMTA avaandmete formaat muutub etteteatamata | CSV veerud, kodeering, eraldajad, kuupäevaformaadid muutuvad | Schema validatsioon staging'us, alert kui veerud kaovad/lisanduvad, varundatud koopiad vanadest failidest |
+| EMTA andmete värskendamise sagedus on madalam kui kasutaja ootab | Kui kasutaja näeb "reaalajas" dashboardi ja eeldab, et konkurendi võlg ilmub kohe | Näidata konkurentide võrdlustabeli juures viimase värskendamise aega|
+| Scheduler ebaõnnestub | Cron job jookseb, aga andmeid ei tule | freshness-testid mart'is (alert kui max(updated_at) > 24h), monitooring (Sentry, Grafana) |
 
 ## Privaatsus ja turve
 
-[Kirjelda, millised isiku- või tundlikud andmed teie projektis esinevad (kui üldse) ja kuidas neid kaitsete. Isikuandmed peavad olema anonümiseeritud. Andmebaasi paroolid peavad tulema `.env` failist.]
+Staging'us võib säilitada isikuandmed, mart'is hoida võimalikult agregeerituna, arenduskeskkonnas pseudonümiseerida, logides eemaldada. Andmebaasi paroolid peavad tulema .env failist. Tundlikud äriandmed (mitte isikuandmed, aga sama kaitse vajavad): pangakontode saldod ja IBAN-id; käive, kasum, marginaalid. Juhtimislaua enda tekitatud andmed: kasutajakontod (e-post, parool, sessioonitokenid, IP-aadressid, sisselogimiste logi).
