@@ -38,7 +38,7 @@ flowchart LR
 
 | Kiht | Roll |
 |------|------|
-| `staging` | Hoiab allika andmeid töötlemata kujul. |
+| `staging` | Hoiab allikate andmeid töötlemata kujul. |
 | `mart` | Hoiab transformeeritud ja ärilogikat sisaldavaid tabeleid. |
 
 ## Tööjaotus
