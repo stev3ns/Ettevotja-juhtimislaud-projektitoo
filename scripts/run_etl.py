@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, text
 API_BASE_URL = "http://localhost:8001/api"
 API_KEY = "demo-api-key"
 
-POSTGRES_URL = "postgresql+psycopg2://postgres:postgres@localhost:5436/juhtimislaud"
+POSTGRES_URL = "postgresql+psycopg2://praktikum:praktikum@localhost:55432/juhtimislaud"
 
 engine = create_engine(POSTGRES_URL)
 
