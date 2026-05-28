@@ -1,5 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS staging;
 
+DROP TABLE IF EXISTS staging.merit_customers_raw;
+DROP TABLE IF EXISTS staging.merit_vendors_raw;
+
 CREATE TABLE IF NOT EXISTS staging.merit_customers_raw (
     batch_id TEXT NOT NULL,
     loaded_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -9,7 +12,7 @@ CREATE TABLE IF NOT EXISTS staging.merit_customers_raw (
     reg_no TEXT,
     changed_date TIMESTAMP NULL,
     raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, customer_id)
+    PRIMARY KEY (customer_id)
 );
 
 CREATE TABLE IF NOT EXISTS staging.merit_vendors_raw (
@@ -21,5 +24,5 @@ CREATE TABLE IF NOT EXISTS staging.merit_vendors_raw (
     reg_no TEXT,
     changed_date TIMESTAMP NULL,
     raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, vendor_id)
+    PRIMARY KEY (vendor_id)
 );

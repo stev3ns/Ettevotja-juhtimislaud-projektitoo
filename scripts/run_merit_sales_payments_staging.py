@@ -146,7 +146,7 @@ def save_payments(payments, batch_id):
             raw_payload
         )
         VALUES (%s, %s, %s, %s, %s, %s)
-        ON CONFLICT (batch_id, payment_id)
+        ON CONFLICT (payment_id)
         DO UPDATE SET
             loaded_at = now(),
             changed_date = EXCLUDED.changed_date,

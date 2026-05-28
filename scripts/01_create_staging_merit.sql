@@ -1,26 +1,19 @@
 CREATE SCHEMA IF NOT EXISTS staging;
 
-CREATE TABLE IF NOT EXISTS staging.merit_purchase_invoices_raw (
-    batch_id TEXT NOT NULL,
-    loaded_at TIMESTAMP NOT NULL DEFAULT now(),
-    source_system TEXT NOT NULL DEFAULT 'merit',
-    endpoint TEXT NOT NULL,
-    pih_id TEXT NOT NULL,
-    changed_date TIMESTAMP NULL,
-    raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, pih_id)
-);
-CREATE TABLE IF NOT EXISTS staging.merit_purchase_invoices_raw (
-    batch_id TEXT NOT NULL,
-    loaded_at TIMESTAMP NOT NULL DEFAULT now(),
-    source_system TEXT NOT NULL DEFAULT 'merit',
-    endpoint TEXT NOT NULL,
-    pih_id TEXT NOT NULL,
-    changed_date TIMESTAMP NULL,
-    raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, pih_id)
-);
+DROP TABLE IF EXISTS staging.merit_purchase_invoices_raw;
+DROP TABLE IF EXISTS staging.merit_sales_invoices_raw;
+DROP TABLE IF EXISTS staging.merit_payments_raw;
 
+CREATE TABLE IF NOT EXISTS staging.merit_purchase_invoices_raw (
+    batch_id TEXT NOT NULL,
+    loaded_at TIMESTAMP NOT NULL DEFAULT now(),
+    source_system TEXT NOT NULL DEFAULT 'merit',
+    endpoint TEXT NOT NULL,
+    pih_id TEXT NOT NULL,
+    changed_date TIMESTAMP NULL,
+    raw_payload JSONB NOT NULL,
+    PRIMARY KEY (pih_id)
+);
 CREATE TABLE IF NOT EXISTS staging.merit_sales_invoices_raw (
     batch_id TEXT NOT NULL,
     loaded_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -29,7 +22,7 @@ CREATE TABLE IF NOT EXISTS staging.merit_sales_invoices_raw (
     sih_id TEXT NOT NULL,
     changed_date TIMESTAMP NULL,
     raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, sih_id)
+    PRIMARY KEY (sih_id)
 );
 
 CREATE TABLE IF NOT EXISTS staging.merit_payments_raw (
@@ -40,5 +33,5 @@ CREATE TABLE IF NOT EXISTS staging.merit_payments_raw (
     payment_id TEXT NOT NULL,
     changed_date TIMESTAMP NULL,
     raw_payload JSONB NOT NULL,
-    PRIMARY KEY (batch_id, payment_id)
+    PRIMARY KEY (payment_id)
 );
