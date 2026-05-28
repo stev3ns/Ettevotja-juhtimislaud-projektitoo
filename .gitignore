@@ -1,9 +1,11 @@
 .env
+.venv/
 __pycache__/
 .pytest_cache/
 *.pyc
 *.log
-.streamlit/
+# Streamlit config is committed intentionally
+# .streamlit/
 target/
 dbt_packages/
 logs/

@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 import uuid
 from pathlib import Path
@@ -58,9 +59,8 @@ def load_csv_to_staging(
     table_name: str,
     source_dataset: str,
     batch_id: str,
+    delimiter: str = ";",
 ) -> int:
-    delimiter = detect_delimiter(file_path)
-
     sql = f"""
         INSERT INTO {table_name} (
             batch_id,
@@ -70,11 +70,7 @@ def load_csv_to_staging(
             row_num,
             raw_payload
         )
-        VALUES (%s, %s, %s, %s, %s, %s)
-        ON CONFLICT (batch_id, row_num)
-        DO UPDATE SET
-            loaded_at = now(),
-            raw_payload = EXCLUDED.raw_payload;
+        VALUES (%s, %s, %s, %s, %s, %s);
     """
 
     row_count = 0
@@ -84,6 +80,10 @@ def load_csv_to_staging(
 
         with get_db_connection() as conn:
             with conn.cursor() as cur:
+                print(f"Puhastan tabeli: {table_name}")
+                cur.execute(f"TRUNCATE TABLE {table_name};")
+                conn.commit()
+
                 for row_num, row in enumerate(reader, start=1):
                     cleaned_row = {
                         key.strip() if key else key: value.strip() if isinstance(value, str) else value
@@ -98,16 +98,15 @@ def load_csv_to_staging(
                             source_dataset,
                             str(file_path),
                             row_num,
-                            Json(cleaned_row),
+                            json.dumps(cleaned_row, ensure_ascii=False),
                         ),
                     )
 
                     row_count += 1
 
-            conn.commit()
+                conn.commit()
 
     return row_count
-
 
 def main():
     batch_id = str(uuid.uuid4())
