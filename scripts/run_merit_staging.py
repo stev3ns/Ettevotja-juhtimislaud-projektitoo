@@ -85,7 +85,7 @@ def save_purchase_invoices(invoices, batch_id):
             raw_payload
         )
         VALUES (%s, %s, %s, %s, %s, %s)
-        ON CONFLICT (batch_id, pih_id)
+        ON CONFLICT (pih_id)
         DO UPDATE SET
             loaded_at = now(),
             changed_date = EXCLUDED.changed_date,
