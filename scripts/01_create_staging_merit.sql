@@ -1,8 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS staging;
 
-DROP TABLE IF EXISTS staging.merit_purchase_invoices_raw;
-DROP TABLE IF EXISTS staging.merit_sales_invoices_raw;
-DROP TABLE IF EXISTS staging.merit_payments_raw;
+
 
 CREATE TABLE IF NOT EXISTS staging.merit_purchase_invoices_raw (
     batch_id TEXT NOT NULL,
