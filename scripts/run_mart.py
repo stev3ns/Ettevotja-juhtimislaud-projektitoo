@@ -22,6 +22,7 @@ POSTGRES_USER = get_env("POSTGRES_USER", "praktikum")
 POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD", "praktikum")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+# Järjekord on oluline: skeem/funktsioonid -> allikavaated -> KPI vaated.
 SQL_FILES = [
     "08_create_mart_schema.sql",
     "09_mart_from_emta.sql",
@@ -36,8 +37,8 @@ def get_db_connection():
         "port": POSTGRES_PORT,
         "dbname": POSTGRES_DB,
         "user": POSTGRES_USER,
+        "password": POSTGRES_PASSWORD,
     }
-    connect_kwargs["pass" + "word"] = POSTGRES_PASSWORD
     return psycopg2.connect(**connect_kwargs)
 
 
@@ -52,7 +53,12 @@ def main():
         with conn.cursor() as cur:
             for sql_file in SQL_FILES:
                 print(f"Käivitan: {sql_file}")
-                execute_sql_file(cur, sql_file)
+                try:
+                    execute_sql_file(cur, sql_file)
+                except Exception as exc:
+                    raise RuntimeError(
+                        f"SQL faili käivitamine ebaõnnestus ({sql_file}): {exc}"
+                    ) from exc
             cur.execute(
                 "INSERT INTO mart.etl_runs (pipeline_name, status) VALUES (%s, %s)",
                 ("mart", "ok"),

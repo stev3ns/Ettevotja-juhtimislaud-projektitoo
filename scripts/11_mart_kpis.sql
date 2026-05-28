@@ -66,7 +66,7 @@ SELECT
     sum(net_cashflow_eur) AS net_cashflow_last_30d_eur,
     sum(vat_payable_eur) AS vat_payable_last_30d_eur
 FROM mart.kpi_daily
-WHERE day_date >= CURRENT_DATE - INTERVAL '29 days';
+WHERE day_date BETWEEN CURRENT_DATE - INTERVAL '30 days' AND CURRENT_DATE - INTERVAL '1 day';
 
 CREATE OR REPLACE VIEW mart.kpi_runway AS
 WITH balance AS (
@@ -74,9 +74,9 @@ WITH balance AS (
     FROM mart.kpi_daily
 ),
 expense AS (
-    SELECT COALESCE(avg(NULLIF(purchase_cost_eur + outgoing_payments_eur, 0)), 0) AS avg_daily_expense_30d_eur
+    SELECT COALESCE(avg(outgoing_payments_eur), 0) AS avg_daily_expense_30d_eur
     FROM mart.kpi_daily
-    WHERE day_date >= CURRENT_DATE - INTERVAL '29 days'
+    WHERE day_date BETWEEN CURRENT_DATE - INTERVAL '30 days' AND CURRENT_DATE - INTERVAL '1 day'
 )
 SELECT
     CURRENT_DATE AS snapshot_date,
