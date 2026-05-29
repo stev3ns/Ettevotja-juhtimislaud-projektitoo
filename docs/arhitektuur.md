@@ -2,16 +2,15 @@
 
 ## Äriküsimus
 
-Ettevõtja juhtimislaud, mis võimaldab jälgida ettevõtte finantsseisu reaalajas ning võrrelda seda konkurentidega.
+Ettevõtja juhtimislaud, mis võimaldab jälgida ettevõtte finantsseisu reaalajas ning võrrelda ettevõttet konkurentidega.
 
 ## Mõõdikud
 
-1. Vaba raha - pangakontode saldod + kassa - tasumist vajavad arved
-2. Viimase 30 päeva tulud ja kulud
-3. Rahaline puhver (Runway) - vaba raha / keskmine kulu päeva kohta
-4. Käibemaksu kuupõhine arvestus - müügikäibemaks - sisendkäibemaks = tasumisele kuuluv summa
-5. Viimased tehingud - 5 viimast tehingut
-6. Konkurentide võrdlustabel - käive, kasum, töötajad, käive €/töötajate arv, MTA võlg
+1. Viimase 30 päeva tulud ja kulud
+2. Rahaline puhver (Runway) - vaba raha / keskmine kulu päeva kohta
+3. Käibemaksu kuupõhine arvestus - müügikäibemaks - sisendkäibemaks = tasumisele kuuluv summa
+
+4. Konkurentide võrdlustabel - käive, kasum, töötajad, käive €/töötajate arv, MTA võlg
 
 ## Andmeallikad
 
