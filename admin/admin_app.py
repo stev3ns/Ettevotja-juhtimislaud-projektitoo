@@ -311,6 +311,29 @@ if st.button("Käivita Merit ajaloo laadimine", use_container_width=True):
         with st.expander("Vaata tehnilist väljundit"):
             st.code(output[-4000:])
 
+st.markdown("#### Merit jooksev uuendus")
+
+st.caption(
+    "Tõmbab Meritist automaatselt viimased 14 päeva. "
+    "Sobib igapäevaseks kasutuseks, sest ON CONFLICT loogika väldib topeltridu."
+)
+
+if st.button("Uuenda Merit viimased 14 päeva", use_container_width=True):
+    with st.spinner("Uuendan Meriti viimase 14 päeva andmeid..."):
+        code, output = run_command(
+            [
+                sys.executable,
+                "scripts/run_merit_daily_load.py",
+            ]
+        )
+
+    if code == 0:
+        st.success("Meriti jooksev uuendus õnnestus.")
+    else:
+        st.error("Meriti jooksev uuendus ebaõnnestus.")
+
+    with st.expander("Vaata tehnilist väljundit"):
+        st.code(output[-4000:])
 
 st.markdown("#### Ohtlik tegevus")
 
