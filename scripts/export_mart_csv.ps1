@@ -33,6 +33,10 @@ Export-MartView "mart.kpi_last_30_days" "mart_kpi_last_30_days.csv"
 Export-MartView "mart.kpi_daily" "mart_kpi_daily.csv"
 Export-MartView "mart.kpi_monthly" "mart_kpi_monthly.csv"
 Export-MartView "mart.kpi_runway" "mart_kpi_runway.csv"
+Export-MartView "mart.counterparty_activity" "mart_counterparty_activity.csv"
+Export-MartView "mart.counterparties_with_reg_code" "mart_counterparties_with_reg_code.csv"
+Export-MartView "mart.emta_counterparty_tax_risk" "mart_emta_counterparty_tax_risk.csv"
+Export-MartView "mart.counterparties_missing_reg_code" "mart_counterparties_missing_reg_code.csv"
 
 # Merit views
 Export-MartView "mart.merit_sales_invoices" "mart_merit_sales_invoices.csv"

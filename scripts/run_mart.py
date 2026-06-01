@@ -28,6 +28,7 @@ SQL_FILES = [
     "09_mart_from_emta.sql",
     "10_mart_from_merit.sql",
     "11_mart_kpis.sql",
+    "12_mart_counterparty_risk.sql",   
 ]
 
 
