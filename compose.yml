@@ -11,6 +11,7 @@ services:
     ports:
       - "${DB_PORT_HOST:-55432}:5432"
     volumes:
+      - ./scripts:/scripts:ro
       - ./init:/docker-entrypoint-initdb.d
       - pgdata:/var/lib/postgresql
     healthcheck:
