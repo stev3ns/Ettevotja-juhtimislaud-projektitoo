@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import psycopg2
@@ -55,6 +55,51 @@ def format_dt(value) -> str:
         return "puudub"
     return str(value).split(".")[0]
 
+def clear_merit_staging():
+    sql = """
+        TRUNCATE TABLE
+            staging.merit_purchase_invoices_raw,
+            staging.merit_sales_invoices_raw,
+            staging.merit_payments_raw,
+            staging.merit_customers_raw,
+            staging.merit_vendors_raw;
+    """
+
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+
+
+def get_merit_counts():
+    sql = """
+        SELECT 'Ostuarved' AS name, COUNT(*) AS row_count
+        FROM staging.merit_purchase_invoices_raw
+
+        UNION ALL
+
+        SELECT 'Müügiarved', COUNT(*)
+        FROM staging.merit_sales_invoices_raw
+
+        UNION ALL
+
+        SELECT 'Maksed/laekumised', COUNT(*)
+        FROM staging.merit_payments_raw
+
+        UNION ALL
+
+        SELECT 'Kliendid', COUNT(*)
+        FROM staging.merit_customers_raw
+
+        UNION ALL
+
+        SELECT 'Tarnijad', COUNT(*)
+        FROM staging.merit_vendors_raw;
+    """
+
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            return cur.fetchall()
 
 def run_command(command: list[str]) -> tuple[int, str]:
     started_at = datetime.now().isoformat(timespec="seconds")
@@ -206,6 +251,114 @@ with col2:
             st.code(output[-4000:])
 
 st.divider()
+
+st.divider()
+
+st.markdown("### Merit ajaloo laadimine")
+st.caption(
+    "Laeb Merit API-st ostuarved, müügiarved ja maksed/laekumised staging-tabelitesse."
+)
+
+try:
+    merit_counts = get_merit_counts()
+    merit_cols = st.columns(len(merit_counts))
+
+    for col, (name, row_count) in zip(merit_cols, merit_counts):
+        with col:
+            st.metric(name, f"{row_count:,}".replace(",", " "))
+
+except Exception as e:
+    st.warning("Meriti staging seisu lugemine ebaõnnestus.")
+    st.code(str(e))
+
+col1, col2 = st.columns(2)
+
+with col1:
+    merit_start_date = st.date_input(
+        "Merit alguskuupäev",
+        value=date(2025, 1, 1),
+        key="merit_backfill_start_date",
+    )
+
+with col2:
+    merit_end_date = st.date_input(
+        "Merit lõppkuupäev",
+        value=date.today(),
+        key="merit_backfill_end_date",
+    )
+
+if st.button("Käivita Merit ajaloo laadimine", use_container_width=True):
+    if merit_start_date > merit_end_date:
+        st.error("Alguskuupäev ei tohi olla hilisem kui lõppkuupäev.")
+    else:
+        with st.spinner("Meriti ajaloo laadimine käib..."):
+            code, output = run_command(
+                [
+                    sys.executable,
+                    "scripts/run_merit_backfill.py",
+                    "--start-date",
+                    merit_start_date.isoformat(),
+                    "--end-date",
+                    merit_end_date.isoformat(),
+                ]
+            )
+
+        if code == 0:
+            st.success("Meriti ajaloo laadimine õnnestus.")
+        else:
+            st.error("Meriti ajaloo laadimine ebaõnnestus.")
+
+        with st.expander("Vaata tehnilist väljundit"):
+            st.code(output[-4000:])
+
+st.markdown("#### Merit jooksev uuendus")
+
+st.caption(
+    "Tõmbab Meritist automaatselt viimased 14 päeva. "
+    "Sobib igapäevaseks kasutuseks, sest ON CONFLICT loogika väldib topeltridu."
+)
+
+if st.button("Uuenda Merit viimased 14 päeva", use_container_width=True):
+    with st.spinner("Uuendan Meriti viimase 14 päeva andmeid..."):
+        code, output = run_command(
+            [
+                sys.executable,
+                "scripts/run_merit_daily_load.py",
+            ]
+        )
+
+    if code == 0:
+        st.success("Meriti jooksev uuendus õnnestus.")
+    else:
+        st.error("Meriti jooksev uuendus ebaõnnestus.")
+
+    with st.expander("Vaata tehnilist väljundit"):
+        st.code(output[-4000:])
+
+st.markdown("#### Ohtlik tegevus")
+
+st.warning(
+    "See kustutab Meriti staging-tabelite sisu, kuid jätab tabelid alles. "
+    "Kasuta ainult arenduses või enne uut täielikku ajaloo laadimist."
+)
+
+confirm_delete_merit = st.checkbox(
+    "Kinnitan, et soovin Meriti staging ajaloo kustutada",
+    key="confirm_delete_merit_history",
+)
+
+if st.button(
+    "Kustuta Merit staging ajalugu",
+    use_container_width=True,
+    disabled=not confirm_delete_merit,
+):
+    with st.spinner("Kustutan Meriti staging andmeid..."):
+        try:
+            clear_merit_staging()
+            st.success("Meriti staging ajalugu kustutati.")
+        except Exception as e:
+            st.error("Meriti staging ajaloo kustutamine ebaõnnestus.")
+            st.code(str(e))
 
 st.markdown("### Viimane logi")
 

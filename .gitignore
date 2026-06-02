@@ -11,3 +11,4 @@ dbt_packages/
 logs/
 data/raw/emta/*.csv
 data/raw/emta/*.zip
+exports/

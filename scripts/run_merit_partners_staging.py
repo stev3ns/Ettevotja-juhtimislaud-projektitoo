@@ -87,7 +87,7 @@ def save_customers(customers, batch_id):
             raw_payload
         )
         VALUES (%s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (batch_id, customer_id)
+        ON CONFLICT (customer_id)
         DO UPDATE SET
             loaded_at = now(),
             reg_no = EXCLUDED.reg_no,
@@ -133,7 +133,7 @@ def save_vendors(vendors, batch_id):
             raw_payload
         )
         VALUES (%s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (batch_id, vendor_id)
+        ON CONFLICT (vendor_id)
         DO UPDATE SET
             loaded_at = now(),
             reg_no = EXCLUDED.reg_no,

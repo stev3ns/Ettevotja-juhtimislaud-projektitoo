@@ -22,13 +22,16 @@ SELECT
         l.raw_payload ->> 'DocNo',
         l.raw_payload ->> 'Number'
     ) AS invoice_no,
-    mart.parse_date(
-        COALESCE(
-            l.raw_payload ->> 'InvoiceDate',
-            l.raw_payload ->> 'InvDate',
-            l.raw_payload ->> 'Date',
-            l.raw_payload ->> 'DocDate'
-        )
+   mart.parse_date(
+   COALESCE(
+        LEFT(l.raw_payload ->> 'DocumentDate', 10),
+        LEFT(l.raw_payload ->> 'TransactionDate', 10),
+        LEFT(l.raw_payload ->> 'InvoiceDate', 10),
+        LEFT(l.raw_payload ->> 'InvDate', 10),
+        LEFT(l.raw_payload ->> 'Date', 10),
+        LEFT(l.raw_payload ->> 'DocDate', 10)
+    )
+
     ) AS invoice_date,
     mart.parse_date(
         COALESCE(
@@ -112,10 +115,12 @@ SELECT
     ) AS invoice_no,
     mart.parse_date(
         COALESCE(
-            l.raw_payload ->> 'InvoiceDate',
-            l.raw_payload ->> 'InvDate',
-            l.raw_payload ->> 'Date',
-            l.raw_payload ->> 'DocDate'
+            LEFT(l.raw_payload ->> 'DocumentDate', 10),
+            LEFT(l.raw_payload ->> 'TransactionDate', 10),
+            LEFT(l.raw_payload ->> 'InvoiceDate', 10),
+            LEFT(l.raw_payload ->> 'InvDate', 10),
+            LEFT(l.raw_payload ->> 'Date', 10),
+            LEFT(l.raw_payload ->> 'DocDate', 10)
         )
     ) AS invoice_date,
     mart.parse_date(
@@ -195,9 +200,11 @@ SELECT
     l.changed_date,
     mart.parse_date(
         COALESCE(
-            l.raw_payload ->> 'PaymentDate',
-            l.raw_payload ->> 'Date',
-            l.raw_payload ->> 'DocDate'
+            LEFT(l.raw_payload ->> 'PaymentDate', 10),
+            LEFT(l.raw_payload ->> 'TransactionDate', 10),
+            LEFT(l.raw_payload ->> 'DocumentDate', 10),
+            LEFT(l.raw_payload ->> 'Date', 10),
+            LEFT(l.raw_payload ->> 'DocDate', 10)
         )
     ) AS payment_date,
     COALESCE(
