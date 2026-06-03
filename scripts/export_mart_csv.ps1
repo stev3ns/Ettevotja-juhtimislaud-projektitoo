@@ -37,6 +37,7 @@ Export-MartView "mart.counterparty_activity" "mart_counterparty_activity.csv"
 Export-MartView "mart.counterparties_with_reg_code" "mart_counterparties_with_reg_code.csv"
 Export-MartView "mart.emta_counterparty_tax_risk" "mart_emta_counterparty_tax_risk.csv"
 Export-MartView "mart.counterparties_missing_reg_code" "mart_counterparties_missing_reg_code.csv"
+Export-MartView "mart.monthly_sales_costs" "mart_monthly_sales_costs.csv"
 
 # Merit views
 Export-MartView "mart.merit_sales_invoices" "mart_merit_sales_invoices.csv"
