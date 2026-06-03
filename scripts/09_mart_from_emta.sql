@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS mart;
 CREATE OR REPLACE VIEW mart.emta_tax_debt AS
 SELECT
     t.batch_id,
-    t.loaded_at,
+    NULL::timestamp AS loaded_at,
     t.source_file,
     t.row_num,
     COALESCE(
@@ -42,7 +42,7 @@ FROM staging.emta_tax_debt_raw t;
 CREATE OR REPLACE VIEW mart.emta_paid_taxes AS
 SELECT
     t.batch_id,
-    t.loaded_at,
+    NULL::timestamp AS loaded_at,
     t.source_file,
     t.row_num,
     COALESCE(
