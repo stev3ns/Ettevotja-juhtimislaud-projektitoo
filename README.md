@@ -235,7 +235,7 @@ Kontrolli, et andmebaasi ühenduse seaded oleksid määratud `.env` failis. Näi
 Loo tabelid andmete impordiks:
 
 ```powershell
-scripts/01_create_staging_merit.sql
+Get-Content scripts/01_create_staging_merit.sql | docker compose exec -T db psql -U praktikum -d praktikum
 ```
 Käivita andmete import andes ette alguskuupäeva:
 
