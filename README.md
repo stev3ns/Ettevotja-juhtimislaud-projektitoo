@@ -234,7 +234,7 @@ Päris `.env` faili ei tohi reposse commit’ida.
 
 ### 3. Meritist andmete import Staging-kihti
 
-Käivitades peab ette andma alguskuupäeva
+Käivitades peab ette andma alguskuupäeva:
 
 ```powershell
 python scripts/run_merit_backfill.py --start-date 2025-01-01
