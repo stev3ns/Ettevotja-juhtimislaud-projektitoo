@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS staging.merit_purchase_invoices_raw (
     raw_payload JSONB NOT NULL,
     PRIMARY KEY (pih_id)
 );
+
 CREATE TABLE IF NOT EXISTS staging.merit_sales_invoices_raw (
     batch_id TEXT NOT NULL,
     loaded_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -32,4 +33,28 @@ CREATE TABLE IF NOT EXISTS staging.merit_payments_raw (
     changed_date TIMESTAMP NULL,
     raw_payload JSONB NOT NULL,
     PRIMARY KEY (payment_id)
+);
+
+CREATE TABLE IF NOT EXISTS staging.merit_customers_raw (
+    batch_id TEXT NOT NULL,
+    loaded_at TIMESTAMP NOT NULL DEFAULT now(),
+    source_system TEXT NOT NULL DEFAULT 'merit',
+    endpoint TEXT NOT NULL,
+    customer_id TEXT NOT NULL,
+    reg_no TEXT,
+    changed_date TIMESTAMP NULL,
+    raw_payload JSONB NOT NULL,
+    PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE IF NOT EXISTS staging.merit_vendors_raw (
+    batch_id TEXT NOT NULL,
+    loaded_at TIMESTAMP NOT NULL DEFAULT now(),
+    source_system TEXT NOT NULL DEFAULT 'merit',
+    endpoint TEXT NOT NULL,
+    vendor_id TEXT NOT NULL,
+    reg_no TEXT,
+    changed_date TIMESTAMP NULL,
+    raw_payload JSONB NOT NULL,
+    PRIMARY KEY (vendor_id)
 );
