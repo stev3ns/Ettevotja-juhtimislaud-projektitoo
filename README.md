@@ -232,6 +232,12 @@ Kontrolli, et andmebaasi ühenduse seaded oleksid määratud `.env` failis. Näi
 
 Päris `.env` faili ei tohi reposse commit’ida.
 
+### Meritist andmete import Staging-kihti
+
+```powershell
+python scripts/run_merit_staging.py
+```
+
 ### 3. Mart-kihi käivitamine
 
 Mart-kihi SQL-id käivitatakse järjest:
