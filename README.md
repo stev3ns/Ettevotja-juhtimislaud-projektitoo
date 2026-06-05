@@ -230,8 +230,6 @@ Kontrolli, et andmebaasi ühenduse seaded oleksid määratud `.env` failis. Näi
 .env.example
 ```
 
-Päris `.env` faili ei tohi reposse commit’ida.
-
 ### 3. Meritist andmete import Staging-kihti
 
 Käivitades peab ette andma alguskuupäeva:
@@ -240,7 +238,19 @@ Käivitades peab ette andma alguskuupäeva:
 python scripts/run_merit_backfill.py --start-date 2025-01-01
 ```
 
-### 4. Mart-kihi käivitamine
+### 4. EMTA-st andmete import Staging-kihti
+
+CSV failide alla laadimine:
+```powershell
+python scripts/download_emta_files.py
+```
+
+Andmete laadimine tabelitesse:
+```powershell
+python scripts/load_emta_staging.py
+```
+
+### 5. Mart-kihi käivitamine
 
 Mart-kihi SQL-id käivitatakse järjest:
 
@@ -258,7 +268,7 @@ python scripts/run_mart.py
 12_mart_counterparty_risk.sql
 ```
 
-### 5. CSV eksport
+### 6. CSV eksport
 
 Mart-vaated eksporditakse CSV-failidesse käsuga:
 
@@ -278,7 +288,7 @@ Dashboardi demo jaoks kasutatakse CSV-faile kaustas:
 demo_data/
 ```
 
-### 6. Kontrollskript
+### 7. Kontrollskript
 
 Töövoo kontrollimiseks saab käivitada:
 
