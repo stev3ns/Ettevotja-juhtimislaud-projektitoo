@@ -348,18 +348,6 @@ Peamised KPI-d:
 | Netorahavoog                   | Laekumiste ja väljamaksete vahe / MVP rahavoo näitaja       |
 | KM                             | MVP-s indikatiivne käibemaksu näitaja                       |
 | Vastaspoolte risk              | EMTA maksuvõla kontroll Meriti klientide ja hankijate kohta |
-
-Praegused demo KPI väärtused dashboardis:
-
-```text
-Müük:          579,53 €
-Kulud:          50,20 €
-Netorahavoog:  529,33 €
-KM:              0,00 €
-```
-
-KPI-de arvutamisel kasutatakse ärikuupäeva. Projekti käigus parandati probleem, kus ajaloo laadimisel võisid tehnilised kuupäevad nagu `loaded_at` või `changed_date` moonutada viimase 30 päeva KPI-d.
-
 ---
 
 ## EMTA vastaspoolte riskiloogika
