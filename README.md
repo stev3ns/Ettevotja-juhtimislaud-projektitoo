@@ -238,6 +238,12 @@ Käivitades peab ette andma alguskuupäeva:
 python scripts/run_merit_backfill.py --start-date 2025-01-01
 ```
 
+Partnerite (kliendid + tarnijad) laadimine:
+
+```powershell
+python scripts/run_merit_partners_staging.py
+```
+
 ### 4. EMTA-st andmete import Staging-kihti
 
 CSV failide alla laadimine:
