@@ -232,7 +232,12 @@ Kontrolli, et andmebaasi ühenduse seaded oleksid määratud `.env` failis. Näi
 
 ### 3. Meritist andmete import Staging-kihti
 
-Käivitades peab ette andma alguskuupäeva:
+Loo tabelid andmete impordiks:
+
+```powershell
+scripts/01_create_staging_merit.sql
+```
+Käivita andmete import andes ette alguskuupäeva:
 
 ```powershell
 python scripts/run_merit_backfill.py --start-date 2025-01-01
