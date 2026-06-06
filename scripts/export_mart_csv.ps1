@@ -21,12 +21,14 @@ function Export-MartView {
 
     Write-Host "Exporting $ViewName -> $OutputPath"
 
-    $env:PGCLIENTENCODING = "UTF8"
-    docker compose exec -T db psql `
+    $bytes = docker compose exec -T db psql `
         -U praktikum `
         -d praktikum `
         -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER ENCODING 'UTF8'" `
-        | Set-Content -Path $OutputPath -Encoding utf8
+        | Out-String
+
+    $bom = [System.Text.UTF8Encoding]::new($true)
+    [System.IO.File]::WriteAllText($OutputPath, $bytes, $bom)
 }
 
 # KPI views
