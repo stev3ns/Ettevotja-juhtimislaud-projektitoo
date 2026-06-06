@@ -5,7 +5,7 @@ import uuid
 from pathlib import Path
 
 import psycopg2
-from psycopg2.extras import Json
+from psycopg2.extras import execute_values
 from dotenv import load_dotenv
 
 
@@ -53,6 +53,7 @@ def detect_delimiter(file_path: Path) -> str:
     dialect = sniffer.sniff(sample, delimiters=";,")
     return dialect.delimiter
 
+BATCH_SIZE = 1000
 
 def load_csv_to_staging(
     file_path: Path,
@@ -63,14 +64,9 @@ def load_csv_to_staging(
 ) -> int:
     sql = f"""
         INSERT INTO {table_name} (
-            batch_id,
-            source_system,
-            source_dataset,
-            source_file,
-            row_num,
-            raw_payload
+            batch_id, source_system, source_dataset, source_file, row_num, raw_payload
         )
-        VALUES (%s, %s, %s, %s, %s, %s);
+        VALUES %s
     """
 
     row_count = 0
@@ -82,27 +78,27 @@ def load_csv_to_staging(
             with conn.cursor() as cur:
                 print(f"Puhastan tabeli: {table_name}")
                 cur.execute(f"TRUNCATE TABLE {table_name};")
-                conn.commit()
 
+                batch = []
                 for row_num, row in enumerate(reader, start=1):
                     cleaned_row = {
                         key.strip() if key else key: value.strip() if isinstance(value, str) else value
                         for key, value in row.items()
                     }
-
-                    cur.execute(
-                        sql,
-                        (
-                            batch_id,
-                            "emta",
-                            source_dataset,
-                            str(file_path),
-                            row_num,
-                            json.dumps(cleaned_row, ensure_ascii=False),
-                        ),
-                    )
-
+                                        batch.append((
+                        batch_id,
+                        "emta",
+                        source_dataset,
+                        str(file_path),
+                        row_num,
+                        json.dumps(cleaned_row, ensure_ascii=False),
+                    ))
                     row_count += 1
+                        if len(batch) >= BATCH_SIZE:
+                        execute_values(cur, sql, batch)
+                        batch = []
+                    if batch:
+                    execute_values(cur, sql, batch)
 
                 conn.commit()
 
