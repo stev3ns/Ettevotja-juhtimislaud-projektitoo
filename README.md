@@ -251,6 +251,12 @@ python scripts/run_merit_partners_staging.py
 
 ### 4. EMTA-st andmete import Staging-kihti
 
+Loo tabelid andmete impordiks:
+
+```powershell
+Get-Content scripts/02_create_staging_emta.sql | docker compose exec -T db psql -U praktikum -d praktikum
+```
+
 CSV failide alla laadimine:
 ```powershell
 python scripts/download_emta_files.py
