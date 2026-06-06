@@ -21,11 +21,11 @@ def get_env(name: str, default: str | None = None) -> str:
     return str(value).strip()
 
 
-POSTGRES_HOST = get_env("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = get_env("POSTGRES_PORT", "55432")
-POSTGRES_DB = get_env("POSTGRES_DB", "juhtimislaud")
-POSTGRES_USER = get_env("POSTGRES_USER", "praktikum")
-POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD", "praktikum")
+POSTGRES_HOST = get_env("POSTGRES_HOST")
+POSTGRES_PORT = get_env("POSTGRES_PORT")
+POSTGRES_DB = get_env("POSTGRES_DB")
+POSTGRES_USER = get_env("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD")
 
 
 def get_db_connection():
