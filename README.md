@@ -218,25 +218,20 @@ Paigalda Python sõltuvused:
 pip install -r requirements.txt
 ```
 
-Kui kasutatakse Docker Compose’i:
-
-```powershell
-docker compose up -d
-```
-
 Kontrolli, et andmebaasi ühenduse seaded oleksid määratud `.env` failis. Näidis on failis:
 
 ```text
 .env.example
 ```
 
-### 3. Meritist andmete import Staging-kihti
-
-Loo tabelid andmete impordiks:
+Tabelite loomine Supabase andmebaasi:
 
 ```powershell
-Get-Content scripts/01_create_staging_merit.sql | docker compose exec -T db psql -U praktikum -d praktikum
+python scripts/init_db.py
 ```
+
+### 3. Meritist andmete import Staging-kihti
+
 Käivita andmete import andes ette alguskuupäeva:
 
 ```powershell
@@ -250,12 +245,6 @@ python scripts/run_merit_partners_staging.py
 ```
 
 ### 4. EMTA-st andmete import Staging-kihti
-
-Loo tabelid andmete impordiks:
-
-```powershell
-Get-Content scripts/02_create_staging_emta.sql | docker compose exec -T db psql -U praktikum -d praktikum
-```
 
 CSV failide alla laadimine:
 ```powershell
@@ -277,7 +266,6 @@ python scripts/run_mart.py
 
 `run_mart.py` käivitab järjest järgmised SQL-failid:
 ```text
-08_create_mart_schema.sql
 09_mart_from_emta.sql
 10_mart_from_merit.sql
 11_mart_kpis.sql
