@@ -23,7 +23,7 @@ function Export-MartView {
 
     docker compose exec -T db psql `
         -U praktikum `
-        -d juhtimislaud `
+        -d praktikum `
         -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER" `
         > $OutputPath
 }
