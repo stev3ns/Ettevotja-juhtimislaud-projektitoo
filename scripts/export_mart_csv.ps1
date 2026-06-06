@@ -16,18 +16,19 @@ function Export-MartView {
         [string]$ViewName,
         [string]$FileName
     )
-    
-    $ContainerPath = "/tmp/$FileName"
+
     $OutputPath = Join-Path $ExportDir $FileName
 
     Write-Host "Exporting $ViewName -> $OutputPath"
 
-    docker compose exec -T db psql `
+    $bytes = docker compose exec -T db psql `
         -U praktikum `
         -d praktikum `
-    -c "\copy (SELECT * FROM $ViewName) TO '$ContainerPath' WITH CSV HEADER ENCODING 'UTF8'"
+        -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER ENCODING 'UTF8'" `
+        | Out-String
 
-    docker compose cp "db:$ContainerPath" $OutputPath
+    $bom = [System.Text.UTF8Encoding]::new($true)
+    [System.IO.File]::WriteAllText($OutputPath, $bytes, $bom)
 }
 
 # KPI views
