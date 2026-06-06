@@ -269,14 +269,13 @@ python scripts/load_emta_staging.py
 
 ### 5. Mart-kihi käivitamine
 
-Mart-kihi SQL-id käivitatakse järjest:
+Mart-kihi SQL-id käivitatakse käsuga:
 
 ```powershell
 python scripts/run_mart.py
 ```
 
-`run_mart.py` käivitab järgmised SQL-failid:
-
+`run_mart.py` käivitab järjest järgmised SQL-failid:
 ```text
 08_create_mart_schema.sql
 09_mart_from_emta.sql
@@ -299,7 +298,7 @@ Ekspordi tulemused tekivad kausta:
 exports/
 ```
 
-Dashboardi demo jaoks kasutatakse CSV-faile kaustas:
+Dashboardi jaoks kasutatakse CSV-faile kaustas:
 
 ```text
 demo_data/
