@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$ExportDir = Join-Path $PSScriptRoot "..\exports"
+$ExportDir = "exports"
 
 New-Item -ItemType Directory -Force -Path $ExportDir | Out-Null
 
@@ -21,14 +21,11 @@ function Export-MartView {
 
     Write-Host "Exporting $ViewName -> $OutputPath"
 
-    $bytes = docker compose exec -T db psql `
+    docker compose exec -T db psql `
         -U praktikum `
         -d praktikum `
-        -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER ENCODING 'UTF8'" `
-        | Out-String
-
-    $bom = [System.Text.UTF8Encoding]::new($true)
-    [System.IO.File]::WriteAllText($OutputPath, $bytes, $bom)
+        -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER" `
+        | Out-File -FilePath $OutputPath -Encoding utf8 -NoNewline
 }
 
 # KPI views
