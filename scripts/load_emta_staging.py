@@ -85,7 +85,7 @@ def load_csv_to_staging(
                         key.strip() if key else key: value.strip() if isinstance(value, str) else value
                         for key, value in row.items()
                     }
-                                        batch.append((
+                    batch.append((
                         batch_id,
                         "emta",
                         source_dataset,
@@ -94,11 +94,12 @@ def load_csv_to_staging(
                         json.dumps(cleaned_row, ensure_ascii=False),
                     ))
                     row_count += 1
-                        if len(batch) >= BATCH_SIZE:
+                    
+                    if len(batch) >= BATCH_SIZE:
                         execute_values(cur, sql, batch)
                         batch = []
-                    if batch:
-                    execute_values(cur, sql, batch)
+                if batch:
+                execute_values(cur, sql, batch)
 
                 conn.commit()
 
