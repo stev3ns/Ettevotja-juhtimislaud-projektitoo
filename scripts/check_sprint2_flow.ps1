@@ -14,11 +14,11 @@ docker compose up -d db
 
 Write-Host ""
 Write-Host "2. Checking database connection..."
-docker compose exec db psql -U praktikum -d juhtimislaud -c "SELECT 1;"
+docker compose exec db psql -U praktikum -d praktikum -c "SELECT 1;"
 
 Write-Host ""
 Write-Host "3. Checking Merit staging counts..."
-docker compose exec db psql -U praktikum -d juhtimislaud -P pager=off -c "
+docker compose exec db psql -U praktikum -d praktikum -P pager=off -c "
 SELECT 'purchase_invoices' AS table_name, COUNT(*) AS row_count
 FROM staging.merit_purchase_invoices_raw
 UNION ALL
@@ -37,7 +37,7 @@ FROM staging.merit_vendors_raw;
 
 Write-Host ""
 Write-Host "4. Running Merit staging quality checks..."
-Get-Content .\scripts\check_merit_staging_quality.sql | docker compose exec -T db psql -U praktikum -d juhtimislaud
+Get-Content .\scripts\check_merit_staging_quality.sql | docker compose exec -T db psql -U praktikum -d praktikum
 
 Write-Host ""
 Write-Host "5. Running mart layer..."
@@ -45,7 +45,7 @@ python .\scripts\run_mart.py
 
 Write-Host ""
 Write-Host "6. Checking mart KPI output..."
-docker compose exec db psql -U praktikum -d juhtimislaud -P pager=off -c "
+docker compose exec db psql -U praktikum -d praktikum -P pager=off -c "
 SELECT *
 FROM mart.kpi_last_30_days;
 "
