@@ -7,6 +7,7 @@ from pathlib import Path
 
 import psycopg2
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 
 load_dotenv(override=True)
@@ -54,6 +55,11 @@ def detect_delimiter(file_path: Path) -> str:
     return dialect.delimiter
 
 
+def count_lines(file_path: Path) -> int:
+    with file_path.open("r", encoding="utf-8-sig", errors="replace") as f:
+        return sum(1 for _ in f) - 1
+
+
 def load_csv_to_staging(
     file_path: Path,
     table_name: str,
@@ -61,19 +67,22 @@ def load_csv_to_staging(
     batch_id: str,
     delimiter: str = ";",
 ) -> int:
+    total = count_lines(file_path)
     row_count = 0
     buf = io.StringIO()
 
     with file_path.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
         reader = csv.DictReader(f, delimiter=delimiter)
-        for row_num, row in enumerate(reader, start=1):
-            cleaned_row = {
-                key.strip() if key else key: value.strip() if isinstance(value, str) else value
-                for key, value in row.items()
-            }
-            payload = json.dumps(cleaned_row, ensure_ascii=False).replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n").replace("\r", "\\r")
-            buf.write(f"{batch_id}\temta\t{source_dataset}\t{file_path}\t{row_num}\t{payload}\n")
-            row_count += 1
+        with tqdm(total=total, desc="Loen CSV", unit=" rida") as pbar:
+            for row_num, row in enumerate(reader, start=1):
+                cleaned_row = {
+                    key.strip() if key else key: value.strip() if isinstance(value, str) else value
+                    for key, value in row.items()
+                }
+                payload = json.dumps(cleaned_row, ensure_ascii=False).replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n").replace("\r", "\\r")
+                buf.write(f"{batch_id}\temta\t{source_dataset}\t{file_path}\t{row_num}\t{payload}\n")
+                row_count += 1
+                pbar.update(1)
 
     buf.seek(0)
 
@@ -81,6 +90,7 @@ def load_csv_to_staging(
         with conn.cursor() as cur:
             print(f"Puhastan tabeli: {table_name}")
             cur.execute(f"TRUNCATE TABLE {table_name};")
+            print("Laadin andmebaasi...")
             cur.copy_expert(
                 f"COPY {table_name} (batch_id, source_system, source_dataset, source_file, row_num, raw_payload) FROM STDIN",
                 buf,
