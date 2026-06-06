@@ -99,7 +99,7 @@ def load_csv_to_staging(
                         execute_values(cur, sql, batch)
                         batch = []
                 if batch:
-                execute_values(cur, sql, batch)
+                    execute_values(cur, sql, batch)
 
                 conn.commit()
 
