@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$ExportDir = "exports"
+$ExportDir = Join-Path $PSScriptRoot "..\exports"
 
 New-Item -ItemType Directory -Force -Path $ExportDir | Out-Null
 
