@@ -90,6 +90,7 @@ def load_csv_to_staging(
         with conn.cursor() as cur:
             print(f"Puhastan tabeli: {table_name}")
             cur.execute(f"TRUNCATE TABLE {table_name};")
+            cur.execute("SET statement_timeout = 0;")
             print("Laadin andmebaasi...")
             cur.copy_expert(
                 f"COPY {table_name} (batch_id, source_system, source_dataset, source_file, row_num, raw_payload) FROM STDIN",
