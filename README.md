@@ -282,6 +282,7 @@ python scripts/run_mart.py
 10_mart_from_merit.sql
 11_mart_kpis.sql
 12_mart_counterparty_risk.sql
+13_mart_monthly_sales_costs.sql
 ```
 
 ### 6. CSV eksport
