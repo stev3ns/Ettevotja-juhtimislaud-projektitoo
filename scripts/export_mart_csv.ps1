@@ -25,7 +25,7 @@ function Export-MartView {
         -U praktikum `
         -d praktikum `
         -c "\copy (SELECT * FROM $ViewName) TO STDOUT WITH CSV HEADER" `
-        > $OutputPath
+        | Out-File -FilePath $OutputPath -Encoding utf8 -NoNewline
 }
 
 # KPI views
