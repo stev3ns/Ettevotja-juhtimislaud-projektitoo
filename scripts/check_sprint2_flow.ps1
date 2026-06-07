@@ -3,22 +3,36 @@
 
 $ErrorActionPreference = "Stop"
 
+# Loe .env failist andmebaasi ühenduse andmed
+$envFile = Join-Path $PSScriptRoot ".." ".env"
+if (Test-Path $envFile) {
+    Get-Content $envFile | ForEach-Object {
+        if ($_ -match "^\s*([^#][^=]+)=(.*)$") {
+            [System.Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim())
+        }
+    }
+}
+
+$PGHOST     = $env:POSTGRES_HOST
+$PGPORT     = $env:POSTGRES_PORT
+$PGDATABASE = $env:POSTGRES_DB
+$PGUSER     = $env:POSTGRES_USER
+$PGPASSWORD = $env:POSTGRES_PASSWORD
+
+$connStr = "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}"
+
 Write-Host ""
 Write-Host "========================================"
 Write-Host "Sprint 2 flow check"
 Write-Host "========================================"
 Write-Host ""
 
-Write-Host "1. Starting Docker database..."
-docker compose up -d db
+Write-Host "1. Checking database connection..."
+psql $connStr -c "SELECT 1;"
 
 Write-Host ""
-Write-Host "2. Checking database connection..."
-docker compose exec db psql -U praktikum -d praktikum -c "SELECT 1;"
-
-Write-Host ""
-Write-Host "3. Checking Merit staging counts..."
-docker compose exec db psql -U praktikum -d praktikum -P pager=off -c "
+Write-Host "2. Checking Merit staging counts..."
+psql $connStr -P pager=off -c "
 SELECT 'purchase_invoices' AS table_name, COUNT(*) AS row_count
 FROM staging.merit_purchase_invoices_raw
 UNION ALL
@@ -36,22 +50,19 @@ FROM staging.merit_vendors_raw;
 "
 
 Write-Host ""
-Write-Host "4. Running Merit staging quality checks..."
-Get-Content .\scripts\check_merit_staging_quality.sql | docker compose exec -T db psql -U praktikum -d praktikum
+Write-Host "3. Running Merit staging quality checks..."
+psql $connStr -f .\scripts\check_merit_staging_quality.sql
 
 Write-Host ""
-Write-Host "5. Running mart layer..."
+Write-Host "4. Running mart layer..."
 python .\scripts\run_mart.py
 
 Write-Host ""
-Write-Host "6. Checking mart KPI output..."
-docker compose exec db psql -U praktikum -d praktikum -P pager=off -c "
-SELECT *
-FROM mart.kpi_last_30_days;
-"
+Write-Host "5. Checking mart KPI output..."
+psql $connStr -P pager=off -c "SELECT * FROM mart.kpi_last_30_days;"
 
 Write-Host ""
-Write-Host "7. Exporting mart CSV files..."
+Write-Host "6. Exporting mart CSV files..."
 .\scripts\export_mart_csv.ps1
 
 Write-Host ""
