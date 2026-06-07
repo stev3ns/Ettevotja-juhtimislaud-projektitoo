@@ -109,7 +109,7 @@ def main():
     if row:
         print(f"  Müük:        {row[0]} EUR")
         print(f"  Kulud:       {row[1]} EUR")
-        print(f"  Netovoog:    {row[2]} EUR")
+        print(f"  Kasum/kahjum:    {row[2]} EUR")
     else:
         print(f"  [{FAIL}] KPI vaade ei tagasta tulemust")
 
