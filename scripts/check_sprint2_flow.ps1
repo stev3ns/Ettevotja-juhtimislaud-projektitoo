@@ -1,8 +1,3 @@
-# Sprint 2 flow check
-# Quick verification for team / instructor review
-
-$ErrorActionPreference = "Stop"
-
 Write-Host ""
 Write-Host "========================================"
 Write-Host "Sprint 2 flow check"
