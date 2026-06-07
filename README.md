@@ -269,6 +269,17 @@ python scripts/run_mart.py
 
 Mart-vaated kuvatakse Lovable dashboardil kasutades Supabase andmebaasis olevaid tabeleid.
 
+### 7. Kontrollskript
+
+Töövoo kontrollimiseks saab käivitada:
+
+```powershell
+.\scripts\check_sprint2_flow.ps1
+```
+
+Skript kontrollib andmebaasi, staging/mart seisu, kvaliteedikontrolle, mart-kihi loomist ja KPI väärtuseid.
+
+---
 ---
 
 ## Olulisemad skriptid
