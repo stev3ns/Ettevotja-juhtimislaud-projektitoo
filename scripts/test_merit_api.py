@@ -11,7 +11,7 @@ load_dotenv(override=True)
 
 api_id = os.getenv("MERIT_API_ID", "").strip()
 api_key = os.getenv("MERIT_API_KEY", "").strip()
-base_url = os.getenv("MERIT_API_BASE_URL", "https://aktiva.merit.ee").strip()
+base_url = os.getenv("MERIT_API_BASE_URL").strip()
 
 print("Kasutatav API ID:", api_id)
 
