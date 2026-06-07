@@ -22,13 +22,13 @@ def get_env(name, default=None):
 
 MERIT_API_ID = get_env("MERIT_API_ID")
 MERIT_API_KEY = get_env("MERIT_API_KEY")
-MERIT_API_BASE_URL = get_env("MERIT_API_BASE_URL", "https://aktiva.merit.ee")
+MERIT_API_BASE_URL = get_env("MERIT_API_BASE_URL")
 
-POSTGRES_HOST = get_env("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = get_env("POSTGRES_PORT", "55432")
-POSTGRES_DB = get_env("POSTGRES_DB", "juhtimislaud")
-POSTGRES_USER = get_env("POSTGRES_USER", "praktikum")
-POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD", "praktikum")
+POSTGRES_HOST = get_env("POSTGRES_HOST")
+POSTGRES_PORT = get_env("POSTGRES_PORT")
+POSTGRES_DB = get_env("POSTGRES_DB")
+POSTGRES_USER = get_env("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD")
 
 
 def merit_post(endpoint, payload):
