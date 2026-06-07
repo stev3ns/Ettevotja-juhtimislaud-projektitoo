@@ -14,10 +14,10 @@ def get_env(name, default=None):
     return str(value).strip()
 
 
-POSTGRES_HOST = get_env("POSTGRES_HOST", "localhost")
-POSTGRES_PORT = get_env("POSTGRES_PORT", "5432")
-POSTGRES_DB = get_env("POSTGRES_DB", "postgres")
-POSTGRES_USER = get_env("POSTGRES_USER", "postgres")
+POSTGRES_HOST = get_env("POSTGRES_HOST")
+POSTGRES_PORT = get_env("POSTGRES_PORT")
+POSTGRES_DB = get_env("POSTGRES_DB")
+POSTGRES_USER = get_env("POSTGRES_USER")
 POSTGRES_PASSWORD = get_env("POSTGRES_PASSWORD")
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -95,7 +95,6 @@ def main():
 
     run_check(cur, "müügiarved ilma ärikuupäevata", "SELECT COUNT(*) FROM mart.merit_sales_invoices WHERE invoice_date IS NULL")
     run_check(cur, "ostuarved ilma ärikuupäevata", "SELECT COUNT(*) FROM mart.merit_purchase_invoices WHERE invoice_date IS NULL")
-    run_check(cur, "tasumata müügiarved (outstanding > 0)", "SELECT COUNT(*) FROM mart.merit_sales_invoices WHERE outstanding_amount_eur > 0", expect_zero=False)
 
     # --- EMTA vastaspooled ---
     print("\nEMTA vastaspoolte risk")
