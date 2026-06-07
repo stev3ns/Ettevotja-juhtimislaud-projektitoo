@@ -359,7 +359,7 @@ Oluline erand:
 0 andmereaga riskifail ei ole automaatselt viga.
 ```
 
-Näiteks `mart_counterparties_missing_reg_code.csv` võib olla tühi, kui kõigil aktiivsetel vastaspooltel on registrikood olemas. Samuti võib `mart_emta_counterparty_tax_risk.csv` olla tühi, kui maksuvõlaga vastaspooli ei leitud.
+Näiteks `mart.counterparties_missing_reg_code` võib olla tühi, kui kõigil aktiivsetel vastaspooltel on registrikood olemas. Samuti võib `mart.emta_counterparty_tax_risk` olla tühi, kui maksuvõlaga vastaspooli ei leitud.
 
 ---
 
