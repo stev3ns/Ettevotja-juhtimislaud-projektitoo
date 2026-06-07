@@ -62,8 +62,8 @@ Write-Host "5. Checking mart KPI output..."
 psql $connStr -P pager=off -c "SELECT * FROM mart.kpi_last_30_days;"
 
 Write-Host ""
-Write-Host "6. Exporting mart CSV files..."
-.\scripts\export_mart_csv.ps1
+Write-Host "6. Running quality checks..."
+python .\scripts\run_quality_checks.py
 
 Write-Host ""
 Write-Host "========================================"
